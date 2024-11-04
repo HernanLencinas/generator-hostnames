@@ -1,0 +1,10 @@
+CREATE TABLE `hosts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `position` int(11) DEFAULT NULL,
+  `prefix` varchar(128) DEFAULT NULL,
+  `hostname` varchar(128) DEFAULT NULL,
+  `ip` varchar(15) DEFAULT NULL,
+  `user` varchar(64) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6889 DEFAULT CHARSET=latin1;

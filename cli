@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Define la URL base del endpoint de la API
+API_URL="http://localhost:8080/hostname"
+
+# Función para consultar un hostname
+consultar_hostname() {
+    read -p "Ingrese el prefijo del hostname a consultar: " prefix
+    response=$(curl -s -X GET -H "Content-Type: application/json" -d "{\"prefix\": \"$prefix\"}" "$API_URL")
+    echo -e "\nRespuesta de la consulta:\n$response"
+}
+
+# Función para registrar un nuevo hostname
+registrar_hostname() {
+    read -p "Ingrese el prefijo del hostname: " prefix
+    read -p "Ingrese la IP del hostname: " ip
+    read -p "Ingrese el usuario: " user
+    read -p "Ingrese un comentario: " comment
+    response=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"prefix\": \"$prefix\", \"ip\": \"$ip\", \"user\": \"$user\", \"comment\": \"$comment\"}" "$API_URL")
+    echo -e "\nRespuesta del registro:\n$response"
+}
+
+# Función para eliminar un hostname
+eliminar_hostname() {
+    read -p "Ingrese el hostname a eliminar: " hostname
+    response=$(curl -s -X DELETE -H "Content-Type: application/json" -d "{\"hostname\": \"$hostname\"}" "$API_URL")
+    echo -e "\nRespuesta de la eliminación:\n$response"
+}
+
+# Función para mostrar el menú
+mostrar_menu() {
+    echo "-----------------------------------"
+    echo "  Menú de Administración de Hostnames"
+    echo "-----------------------------------"
+    echo "1. Consultar hostname"
+    echo "2. Registrar nuevo hostname"
+    echo "3. Eliminar hostname"
+    echo "4. Salir"
+    echo
+}
+
+# Bucle principal del menú
+while true; do
+    mostrar_menu
+    read -p "Seleccione una opción: " opcion
+
+    case $opcion in
+        1) consultar_hostname ;;
+        2) registrar_hostname ;;
+        3) eliminar_hostname ;;
+        4) echo "Saliendo del programa."; break ;;
+        *) echo "Opción no válida. Intente de nuevo." ;;
+    esac
+
+    # Espera para que el usuario pueda leer el resultado antes de volver al menú
+    read -p "Presione Enter para regresar al menú..."
+done
+
+echo "Programa finalizado."
