@@ -1,6 +1,6 @@
 # Generador de Hostnames
 
-Este proyecto permite realizar consultas, altas y bajas de hostnames mediante una API expuesta a través de un contenedor Docker. La CLI incluida permite interactuar con la API para gestionar los registros de hostname.
+Este proyecto permite realizar consultas, altas y bajas de hostnames mediante una API expuesta a través de un contenedor Docker.
 
 ## Configuración
 
@@ -57,7 +57,7 @@ Una vez que hayas creado la imagen y configurado `config.py`, ejecuta el contene
 docker run -d -it \
   --name generador_hostnames \
   -p 8080:8080 \
-  -v /generador_hostnames/config.py:/generador/config.py \
+  -v /generador/config.py:/generador/config.py \
   --network apptomation_app-network \
   --restart always \
   telecomcloudvalley/generador_hostname:latest
@@ -74,13 +74,46 @@ docker run -d -it \
 
 ## Uso de la CLI
 
-La CLI interactúa con el servicio y permite realizar consultas, altas y bajas de hostnames. Asegúrate de que el servicio esté en ejecución y escucha en `http://localhost:8080`.
-
-### Ejecutar la CLI
-
 Para ejecutar la CLI, utiliza el siguiente comando:
 
 ```bash
-bash cli.sh
+bash hostname_cli.sh
 ```
 
+La CLI permitirá realizar consultas, altas y bajas de hostnames. Para salir del programa, selecciona la opción correspondiente en el menú.
+
+## Comandos API con `curl`
+
+A continuación, se muestran ejemplos de cómo utilizar `curl` para interactuar con la API del generador de hostnames.
+
+### Consultar Hostname
+
+Para consultar un hostname, puedes utilizar el siguiente comando `curl`:
+
+```bash
+curl -X GET -H "Content-Type: application/json" \
+-d '{"prefix": "NOMBRE_DEL_PREFIX"}' \
+http://localhost:8080/hostname
+```
+
+### Registrar un Nuevo Hostname
+
+Para registrar un nuevo hostname, usa este comando:
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{"prefix": "NOMBRE_DEL_PREFIX", "ip": "DIRECCION_IP", "user": "NOMBRE_USUARIO", "comment": "COMENTARIO"}' \
+http://localhost:8080/hostname
+```
+
+### Eliminar un Hostname
+
+Para eliminar un hostname, utiliza el siguiente comando:
+
+```bash
+curl -X DELETE -H "Content-Type: application/json" \
+-d '{"hostname": "NOMBRE_DEL_HOSTNAME"}' \
+http://localhost:8080/hostname
+```
+
+Estos comandos permiten interactuar directamente con la API para gestionar los hostnames.
